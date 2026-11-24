@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#09090B] text-[#F3F1ED] antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOMNAL (봄날) — Figma Component Library &amp; Picture Assets</title>
+
+  <!-- Google Fonts matching BOMNAL Home Page -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Noto+Serif+KR:wght@700;900&family=Playfair+Display:ital,wght@0,700;0,900;1,600;1,900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#09090B',
+            surface: '#121216',
+            porcelain: '#F3F1ED',
+            ash: '#8A867E',
+            blossom: '#FF4D79',
+            alleycyan: '#38BDF8',
+            figma: '#9747FF',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            kr: ['"Noto Serif KR"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['"Inter"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      background-color: #09090B;
+      color: #F3F1ED;
+      font-family: 'Inter', sans-serif;
+      overflow-x: clip;
+    }
+
+    /* Figma Canvas Dot Grid Backdrop */
+    .figma-canvas-bg {
+      background-color: #09090B;
+      background-image: radial-gradient(rgba(243, 241, 237, 0.1) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Figma Component Dashed Bounding Box */
+    .figma-frame {
+      position: relative;
+      border: 1px dashed rgba(151, 71, 255, 0.55);
+      background-color: rgba(18, 18, 22, 0.72);
+      border-radius: 6px;
+    }
+    .figma-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: #C49BFF;
+    }
+
+    .skew-bomnal { transform: skewX(-14deg); }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-slow { animation: spinSlow 24s linear infinite; }
+
+    /* Full Interactive 360° Rotary Dial Component Physics */
+    #kit-dial-ring {
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kit-dial-node-counter {
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Interactive Aperture Preview */
+    .aperture-demo-slot {
+      display: inline-flex;
+      vertical-align: middle;
+      width: 0px;
+      height: 44px;
+      margin: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), margin 0.4s ease, opacity 0.3s ease;
+    }
+    .aperture-demo:hover .aperture-demo-slot,
+    .aperture-demo.is-open .aperture-demo-slot {
+      width: 96px;
+      margin: 0 12px;
+      opacity: 1;
+    }
+
+    /* 3D Tilted Porcelain Plate */
+    .tilt-plate-demo {
+      transform: perspective(1000px) rotateY(6deg) rotateZ(-1.4deg);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tilt-plate-demo:hover {
+      transform: perspective(1000px) rotateY(0deg) rotateZ(0deg) translateY(-4px);
+    }
+
+    /* Figma Prototype Hotspot Pulse & Screen Transition */
+    @keyframes hotspotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+      50% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
+    }
+    .proto-show-hotspots [data-proto-go] {
+      outline: 1.5px solid #38BDF8 !important;
+      outline-offset: 2px;
+      animation: hotspotPulse 1.8s infinite;
+    }
+    @keyframes protoFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .proto-screen-anim {
+      animation: protoFadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #09090B; }
+    ::-webkit-scrollbar-thumb { background: rgba(243, 241, 237, 0.22); }
+    ::-webkit-scrollbar-thumb:hover { background: #FF4D79; }
+  </style>
+</head>
+<body class="figma-canvas-bg min-h-screen text-[#F3F1ED]">
+
+  <!-- ===================================================================== -->
+  <!-- STICKY FIGMA LIBRARY HEADER                                           -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-50 bg-[#09090B]/92 backdrop-blur-xl border-b border-[#F3F1ED]/12 px-5 sm:px-10 lg:px-12 py-4">
+    <div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="font-serif italic font-black text-[20px] leading-none tracking-[0.06em] text-[#FF4D79] skew-bomnal inline-block">
+          BOMNAL
+        </span>
+        <span class="text-[#F3F1ED]/25">/</span>
+        <span class="font-mono text-[10px] tracking-[0.2em] text-[#C49BFF]">
+          ❖ FIGMA UI KIT &amp; PICTURE ASSETS
+        </span>
+      </div>
+
+      <!-- Section Jump Nav -->
+      <nav class="flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.16em]">
+        <a href="#kit-tokens" class="px-3 py-1.5 rounded bg-[#121216] border border-[#F3F1ED]/15 hover:border-[#FF4D79] hover:text-[#FF4D79] transition-colors">
+          01 TOKENS
+        </a>
+        <a href="#kit-components" class="px-3 py-1.5 rounded bg-[#121216] border border-[#F3F1ED]/15 hover:border-[#9747FF] hover:text-[#C49BFF] transition-colors">
+          02 COMPONENTS
+        </a>
+        <a href="#kit-pictures" class="px-3 py-1.5 rounded bg-[#121216] border border-[#F3F1ED]/15 hover:border-[#38BDF8] hover:text-[#38BDF8] transition-colors">
+          03 PICTURES (11)
+        </a>
+        <a href="#kit-prototype" class="px-3 py-1.5 rounded bg-[#FF4D79] text-[#09090B] font-semibold hover:bg-[#ff658b] transition-colors">
+          ▶ 04 PROTOTYPE
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-12 py-12 space-y-24">
+
+    <!-- =================================================================== -->
+    <!-- 01. DESIGN TOKENS: COLORS & TYPOGRAPHY                              -->
+    <!-- =================================================================== -->
+    <section id="kit-tokens" class="space-y-10">
+      <div class="border-b border-[#F3F1ED]/15 pb-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="font-mono text-[10px] tracking-[0.24em] text-[#FF4D79] block mb-2">
+            01 // FOUNDATIONS FOR FIGMA VARIABLES
+          </span>
+          <h1 class="font-display font-bold text-[40px] sm:text-[52px] leading-none">
+            Color Tokens &amp; <span class="italic font-normal text-[#FF4D79]">Type Scale</span>
+          </h1>
+        </div>
+        <span class="font-mono text-[10px] tracking-[0.18em] text-[#8A867E]">
+          CLICK ANY SWATCH OR TYPE SPEC TO COPY
+        </span>
+      </div>
+
+      <!-- Color Swatches -->
+      <div id="color-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Typography Specimens -->
+      <div class="figma-frame p-6 sm:p-8 space-y-6">
+        <div class="figma-label">❖ Typography / Editorial Scale</div>
+        <div class="divide-y divide-[#F3F1ED]/10">
+          <button type="button" data-copy="Cormorant Garamond Bold · 78px / 0.88" class="copy-item w-full py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 text-left group">
+            <span class="font-display font-bold text-[36px] sm:text-[48px] leading-[0.92] text-[#F3F1ED] group-hover:text-[#FF4D79] transition-colors">
+              Neon &amp; Tradition
+            </span>
+            <span class="font-mono text-[10px] text-[#8A867E]">Display H1 · Cormorant Garamond 700 · 78px</span>
+          </button>
+
+          <button type="button" data-copy="Playfair Display Black Italic · SkewX(-14deg)" class="copy-item w-full py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 text-left group">
+            <span class="font-serif italic font-black text-[34px] text-[#FF4D79] skew-bomnal inline-block">
+              BOMNAL
+            </span>
+            <span class="font-mono text-[10px] text-[#8A867E]">Brand Wordmark · Playfair Display 900i · Skew -14°</span>
+          </button>
+
+          <button type="button" data-copy="Noto Serif KR Black · 900" class="copy-item w-full py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 text-left group">
+            <span class="font-kr font-black text-[34px] text-[#F3F1ED] group-hover:text-[#FF4D79] transition-colors">
+              봄날 · 네온 · 달항아리 · 백자
+            </span>
+            <span class="font-mono text-[10px] text-[#8A867E]">Hangul Ghost / Accent · Noto Serif KR 900</span>
+          </button>
+
+          <button type="button" data-copy="JetBrains Mono · 10px · Tracking 0.2em" class="copy-item w-full py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 text-left group">
+            <span class="font-mono text-[12px] tracking-[0.22em] text-[#38BDF8]">
+              01 // 360° ROTARY EDITORIAL DIAL · AZIMUTH 000°
+            </span>
+            <span class="font-mono text-[10px] text-[#8A867E]">Telemetry / Meta · JetBrains Mono 400 · 10px</span>
+          </button>
+
+          <button type="button" data-copy="Inter Light 300 · 15px / 1.78" class="copy-item w-full py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 text-left group">
+            <span class="font-sans font-light text-[15px] text-[#F3F1ED]/85 max-w-xl">
+              An interactive five-act monograph exploring where 6500K rain-soaked acrylic signage collides with centuries-old Bukchon timber courtyards.
+            </span>
+            <span class="font-mono text-[10px] text-[#8A867E]">Body Copy · Inter 300 · 15px / 1.78</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 02. FIGMA COMPONENT LIBRARY (All Reusable Modules)                  -->
+    <!-- =================================================================== -->
+    <section id="kit-components" class="space-y-10">
+      <div class="border-b border-[#F3F1ED]/15 pb-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="font-mono text-[10px] tracking-[0.24em] text-[#C49BFF] block mb-2">
+            02 // REUSABLE FIGMA COMPONENTS (❖ MASTER SETS)
+          </span>
+          <h2 class="font-display font-bold text-[40px] sm:text-[52px] leading-none">
+            Component <span class="italic font-normal text-[#C49BFF]">Inventory</span>
+          </h2>
+        </div>
+        <span class="font-mono text-[10px] tracking-[0.18em] text-[#8A867E]">
+          EVERY COMPONENT FROM BOMNAL-HOME.HTML
+        </span>
+      </div>
+
+      <!-- Row 1: Navigation HUD, Badges & Buttons -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Component 01: Perimeter HUD Corners -->
+        <div class="lg:col-span-6 figma-frame p-6 space-y-5">
+          <div class="figma-label">❖ HUD / Perimeter Brand &amp; Command Strip</div>
+          <div class="flex flex-wrap items-center justify-between gap-4 bg-[#09090B] p-4 rounded border border-[#F3F1ED]/10">
+            <!-- Brand Stamp -->
+            <div class="flex items-baseline gap-2.5 bg-[#09090B] border border-[#F3F1ED]/15 px-3.5 py-2">
+              <span class="font-serif italic font-black text-[19px] leading-none tracking-[0.06em] text-[#FF4D79] skew-bomnal inline-block">
+                BOMNAL
+              </span>
+              <span class="font-mono text-[9px] tracking-[0.22em] text-[#8A867E]">봄날 // SEOUL</span>
+            </div>
+
+            <!-- Command Strip -->
+            <div class="flex items-center gap-1.5 bg-[#09090B] border border-[#F3F1ED]/15 p-1 font-mono text-[10px] tracking-[0.14em]">
+              <span class="px-2.5 py-1.5">/ SEARCH</span>
+              <span class="w-[1px] h-3.5 bg-[#F3F1ED]/15"></span>
+              <span class="px-2.5 py-1.5">☆ 2</span>
+              <span class="w-[1px] h-3.5 bg-[#F3F1ED]/15"></span>
+              <span class="px-2.5 py-1.5 text-[#8A867E]">[G]</span>
+              <span class="px-3 py-1.5 bg-[#FF4D79] text-[#09090B] font-semibold">SUBSCRIBE</span>
+            </div>
+          </div>
+          <p class="font-mono text-[10px] text-[#8A867E]">Variants: Brand Stamp, Active Author Filter Pill, Floating Command Bar.</p>
+        </div>
+
+        <!-- Component 02: Format Badges & Buttons -->
+        <div class="lg:col-span-6 figma-frame p-6 space-y-5">
+          <div class="figma-label">❖ Atoms / Format Badges, Topic Pills &amp; Buttons</div>
+          <div class="space-y-4">
+            <!-- Badges -->
+            <div class="flex flex-wrap items-center gap-2.5">
+              <span class="px-3 py-1 bg-[#FF4D79] text-[#09090B] font-mono font-semibold text-[10px] tracking-[0.18em]">
+                ★ MONTHLY EXCLUSIVE LONG-READ
+              </span>
+              <span class="px-3 py-1 bg-[#38BDF8] text-[#09090B] font-mono font-semibold text-[10px] tracking-[0.18em]">
+                ● DAILY DISPATCH
+              </span>
+              <span class="inline-flex items-center gap-2 px-2.5 py-1 bg-[#FF4D79] text-[#09090B] font-mono font-semibold text-[10px] tracking-[0.18em]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#09090B] animate-ping"></span>
+                LIVE ARTICLES
+              </span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button type="button" class="px-5 py-2.5 bg-[#F3F1ED] hover:bg-[#FF4D79] text-[#09090B] font-mono font-semibold text-[10px] tracking-[0.2em] transition-colors">
+                OPEN FEATURE →
+              </button>
+              <button type="button" class="px-3.5 py-2.5 border border-[#F3F1ED]/25 hover:border-[#FF4D79] hover:text-[#FF4D79] font-mono text-[11px] transition-colors">
+                ◄
+              </button>
+              <button type="button" class="px-3.5 py-2.5 border border-[#F3F1ED]/25 hover:border-[#FF4D79] hover:text-[#FF4D79] font-mono text-[11px] transition-colors">
+                ►
+              </button>
+              <button type="button" class="px-3 py-2 border border-[#F3F1ED]/20 hover:border-[#FF4D79] hover:text-[#FF4D79] font-mono text-[10px] tracking-[0.16em] transition-colors">
+                ☆ SAVE
+              </button>
+              <button type="button" class="px-3 py-2 border border-[#FF4D79] bg-[#FF4D79]/15 text-[#FF4D79] font-mono text-[10px] tracking-[0.16em]">
+                ★ SAVED
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2A: FULL MASTER COMPONENT — ❖ Hero / 360° Rotary Editorial Dial -->
+      <div class="figma-frame p-6 sm:p-8 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[#9747FF]/30 pb-4">
+          <div class="figma-label">❖ Hero / 360° Rotary Editorial Dial — Full Master Component</div>
+          <div class="flex flex-wrap items-center gap-2 font-mono text-[10px] tracking-[0.16em]">
+            <span id="kit-dial-azimuth" class="px-2.5 py-1 bg-[#09090B] border border-[#F3F1ED]/15 text-[#FF4D79]">AZIMUTH 000°</span>
+            <button id="kit-dial-prev" type="button" class="px-3 py-1 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#FF4D79] hover:text-[#FF4D79] transition-colors">◄ -60°</button>
+            <button id="kit-dial-next" type="button" class="px-3 py-1 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#FF4D79] hover:text-[#FF4D79] transition-colors">+60° ►</button>
+            <button id="kit-dial-auto" type="button" class="px-3 py-1 bg-[#09090B] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#38BDF8] hover:text-[#09090B] transition-colors">▶ AUTO-ROTATE</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <!-- Left: Full-Scale 380x380 Interactive Compass Artboard -->
+          <div class="lg:col-span-6 flex flex-col items-center justify-center bg-[#09090B] border border-[#F3F1ED]/12 rounded-md py-12 px-6 relative overflow-hidden">
+            <!-- Subtle Figma Crosshair Guides -->
+            <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-1/2 h-[1px] bg-[#9747FF]/20"></div>
+            <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-1/2 w-[1px] bg-[#9747FF]/20"></div>
+            <span class="absolute top-3 left-3 font-mono text-[9px] text-[#C49BFF]">FRAME: 380 × 380PX</span>
+            <span id="kit-dial-active-meta" class="absolute bottom-3 left-3 font-mono text-[9px] text-[#8A867E]">01 · LONG-READ · NEON &amp; TRADITION</span>
+
+            <!-- Complete 360° Compass Component -->
+            <div class="relative w-[290px] h-[290px] sm:w-[360px] sm:h-[360px] flex items-center justify-center">
+              <!-- Fixed Top Index Needle -->
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center pointer-events-none">
+                <span class="font-mono text-[8px] tracking-[0.22em] text-[#FF4D79] mb-1">ACTIVE</span>
+                <span class="w-0 h-0 border-l-[5px] border-r-[5px] border-t-[7px] border-l-transparent border-r-transparent border-t-[#FF4D79]"></span>
+              </div>
+
+              <!-- Outer Hairline Ring -->
+              <div class="absolute inset-0 rounded-full border border-[#F3F1ED]/18"></div>
+              <!-- Inner Dashed Ring -->
+              <div class="absolute inset-8 rounded-full border border-dashed border-[#F3F1ED]/15"></div>
+              <!-- Center Glassmorphic Reticle -->
+              <div class="absolute inset-[72px] sm:inset-[92px] rounded-full border border-[#FF4D79]/35 bg-[#09090B]/85 backdrop-blur-md flex flex-col items-center justify-center text-center p-4 shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+                <span id="kit-dial-center-num" class="font-display italic font-bold text-[44px] sm:text-[54px] leading-none text-[#FF4D79]">01</span>
+                <span id="kit-dial-center-kr" class="font-kr font-black text-[15px] text-[#F3F1ED] mt-1">네온</span>
+                <span class="font-mono text-[8px] tracking-[0.2em] text-[#8A867E] mt-1">CLICK ANY NODE</span>
+              </div>
+
+              <!-- Rotating 6-Node Orbital Ring -->
+              <div id="kit-dial-ring" class="absolute inset-0">
+                <!-- 6 Interactive Nodes injected by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Node Variants, Layer Anatomy & Figma Geometry Specs -->
+          <div class="lg:col-span-6 space-y-6">
+            <!-- 4 Node State Variants -->
+            <div class="bg-[#09090B]/90 border border-[#F3F1ED]/12 rounded-md p-5 space-y-4">
+              <div class="font-mono text-[9.5px] tracking-[0.2em] text-[#C49BFF]">NODE VARIANTS (48 × 48PX · STROKE 2PX)</div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="flex flex-col items-center gap-2 p-3 bg-[#121216] rounded border border-[#F3F1ED]/10">
+                  <span class="flex items-center justify-center w-12 h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#F3F1ED] bg-[#FF4D79] text-[#09090B] shadow-[0_0_24px_rgba(255,77,121,0.75)]">01</span>
+                  <span class="font-mono text-[8.5px] text-[#F3F1ED] text-center">Long-Read<br /><span class="text-[#FF4D79]">ACTIVE</span></span>
+                </div>
+                <div class="flex flex-col items-center gap-2 p-3 bg-[#121216] rounded border border-[#F3F1ED]/10">
+                  <span class="flex items-center justify-center w-12 h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#FF4D79] text-[#FF4D79] bg-[#09090B]">04</span>
+                  <span class="font-mono text-[8.5px] text-[#F3F1ED] text-center">Long-Read<br /><span class="text-[#8A867E]">IDLE</span></span>
+                </div>
+                <div class="flex flex-col items-center gap-2 p-3 bg-[#121216] rounded border border-[#F3F1ED]/10">
+                  <span class="flex items-center justify-center w-12 h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#F3F1ED] bg-[#38BDF8] text-[#09090B] shadow-[0_0_22px_rgba(56,189,248,0.65)]">02</span>
+                  <span class="font-mono text-[8.5px] text-[#F3F1ED] text-center">Daily Wire<br /><span class="text-[#38BDF8]">ACTIVE</span></span>
+                </div>
+                <div class="flex flex-col items-center gap-2 p-3 bg-[#121216] rounded border border-[#F3F1ED]/10">
+                  <span class="flex items-center justify-center w-12 h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#38BDF8] text-[#38BDF8] bg-[#09090B]">03</span>
+                  <span class="font-mono text-[8.5px] text-[#F3F1ED] text-center">Daily Wire<br /><span class="text-[#8A867E]">IDLE</span></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Layer Hierarchy & Math Spec -->
+            <div class="bg-[#09090B]/90 border border-[#F3F1ED]/12 rounded-md p-5 space-y-3 font-mono text-[10px]">
+              <div class="flex items-center justify-between border-b border-[#F3F1ED]/10 pb-2">
+                <span class="text-[#C49BFF]">FIGMA LAYER ANATOMY &amp; GEOMETRY</span>
+                <button
+                  type="button"
+                  data-copy="Frame: 380x380px | Outer Ring: 380px 1px #F3F1ED 15% | Inner Dashed: 316px 1px dashed | Center Reticle: 188px #FF4D79 30% | 6 Nodes: 48x48px at 60deg intervals | Transition: 850ms cubic-bezier(0.16, 1, 0.3, 1)"
+                  class="copy-item px-2.5 py-1 bg-[#121216] border border-[#F3F1ED]/20 hover:border-[#FF4D79] hover:text-[#FF4D79] text-[9px] transition-colors"
+                >
+                  COPY SPEC
+                </button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-[#8A867E]">
+                <div class="flex justify-between"><span>01 / Top Needle</span><span class="text-[#FF4D79]">10×7px Triangle</span></div>
+                <div class="flex justify-between"><span>02 / Outer Ring</span><span class="text-[#F3F1ED]">380px · 1px 15%</span></div>
+                <div class="flex justify-between"><span>03 / Inner Dashed</span><span class="text-[#F3F1ED]">316px · Dashed</span></div>
+                <div class="flex justify-between"><span>04 / Center Reticle</span><span class="text-[#F3F1ED]">188px · Blur 12px</span></div>
+                <div class="flex justify-between"><span>05 / Orbital Step</span><span class="text-[#38BDF8]">60° (6 Nodes)</span></div>
+                <div class="flex justify-between"><span>06 / Spring Curve</span><span class="text-[#F3F1ED]">850ms Ease-Out</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2B: Live Article Card + Magnetic Plate & Seal -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Component 04: Live Looping Article Card -->
+        <div class="lg:col-span-6 figma-frame p-6 space-y-5">
+          <div class="figma-label">❖ Stream / Live Looping Card</div>
+          <article class="bg-[#121216] border border-[#F3F1ED]/15 hover:border-[#FF4D79] p-4 transition-colors">
+            <div class="flex items-center justify-between font-mono text-[9px] tracking-[0.18em] mb-3">
+              <span class="inline-flex items-center gap-1.5 text-[#38BDF8]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse"></span>
+                ● LIVE NOW · 2M AGO
+              </span>
+              <span class="text-[#8A867E]">ARCHITECTURE</span>
+            </div>
+            <div class="relative overflow-hidden bg-[#09090B] border border-[#F3F1ED]/10 mb-3">
+              <img
+                src="https://images.unsplash.com/photo-1583167617240-1b4d8e5f9f27?auto=format&fit=crop&w=900&q=80"
+                alt="Bukchon Glass Pavilion"
+                class="w-full h-[150px] object-cover"
+              />
+              <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-[#09090B]/85 font-kr text-[10px] text-[#F3F1ED]">북촌 실시간</span>
+            </div>
+            <h3 class="font-display font-bold text-[22px] leading-[1.08] text-[#F3F1ED] mb-1.5">
+              Twilight Light Calibration Opens at Bukchon Glass Pavilion
+            </h3>
+            <div class="mt-3 pt-2.5 border-t border-[#F3F1ED]/10 flex items-center justify-between font-mono text-[9px] tracking-[0.16em] text-[#8A867E]">
+              <span>BY SEO-YEON PARK · 2 MIN</span>
+              <span class="text-[#FF4D79]">READ →</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Component 05: Magnetic Cursor Photo-Plate + Rotating Seal -->
+        <div class="lg:col-span-6 figma-frame p-6 space-y-5 flex flex-col justify-between">
+          <div class="figma-label">❖ Wire / Magnetic Photo-Plate &amp; Seal</div>
+          <div class="flex flex-col sm:flex-row items-center justify-around gap-6 py-4">
+            <div class="w-[240px] bg-[#121216] border border-[#F3F1ED]/25 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.75)] -rotate-2">
+              <div class="flex justify-between font-mono text-[8.5px] tracking-[0.16em] text-[#38BDF8] mb-1.5">
+                <span>● URBAN LIFE</span>
+                <span>15:40 PM</span>
+              </div>
+              <img
+                src="https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=800&q=80"
+                alt="Yeouido Cherry Blossoms"
+                class="w-full h-[135px] object-cover"
+              />
+            </div>
+
+            <!-- Rotating Museum Seal -->
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-20 relative flex items-center justify-center bg-[#F3F1ED] rounded-full">
+                <svg viewBox="0 0 120 120" class="w-full h-full spin-slow">
+                  <defs>
+                    <path id="demo-seal" d="M 60, 60 m -44, 0 a 44,44 0 1,1 88,0 a 44,44 0 1,1 -88,0" />
+                  </defs>
+                  <text fill="#09090B" font-family="JetBrains Mono" font-size="8.2" letter-spacing="3.2">
+                    <textPath href="#demo-seal">MONTHLY EXCLUSIVE · BOMNAL ·</textPath>
+                  </text>
+                </svg>
+                <span class="absolute font-kr font-black text-[13px] text-[#FF4D79]">봄날</span>
+              </div>
+              <div class="font-mono text-[9.5px] text-[#8A867E] leading-relaxed">
+                <span class="text-[#F3F1ED] block">❖ Porcelain Seal</span>
+                24s linear rotation · SVG textPath.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Porcelain 3D Long-Read Plate + Author Card + Inline Aperture Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Component 06: Porcelain Rupture 3D Plate -->
+        <div class="lg:col-span-5 figma-frame p-6 space-y-5">
+          <div class="figma-label">❖ Porcelain / 3D Tilted Long-Read Plate</div>
+          <div class="bg-[#F3F1ED] text-[#09090B] p-6 rounded">
+            <div class="tilt-plate-demo bg-[#09090B] p-2.5 border border-[#09090B] shadow-[10px_10px_0_rgba(255,77,121,0.92)] mb-5">
+              <div class="flex justify-between font-mono text-[8.5px] tracking-[0.18em] text-[#FF4D79] mb-1.5">
+                <span>ISSUE 03 // MONTHLY EXCLUSIVE</span>
+                <span class="text-[#F3F1ED]">11 MIN READ</span>
+              </div>
+              <img
+                src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=900&q=80"
+                alt="Joseon Moon Jars"
+                class="w-full h-[180px] object-cover"
+              />
+            </div>
+            <div class="font-mono font-semibold text-[9px] tracking-[0.2em] text-[#FF4D79] mb-1">CRAFT &amp; ART · 달항아리</div>
+            <div class="font-display font-bold text-[28px] leading-none text-[#09090B]">The Asymmetry of Joseon Moon Jars</div>
+          </div>
+        </div>
+
+        <!-- Component 07: Author Press Contact Card -->
+        <div class="lg:col-span-3 figma-frame p-6 space-y-5">
+          <div class="figma-label">❖ Authors / Contact Card</div>
+          <div class="group bg-[#121216] border border-[#F3F1ED]/14 hover:border-[#FF4D79] p-4 transition-all">
+            <div class="overflow-hidden border border-[#F3F1ED]/15 mb-3 bg-[#09090B]">
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80"
+                alt="Min-Jun Yang"
+                class="w-full h-[160px] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+            <div class="font-mono text-[8.5px] tracking-[0.2em] text-[#FF4D79] mb-1">SENIOR CULTURE EDITOR</div>
+            <div class="flex items-baseline justify-between mb-1.5">
+              <span class="font-display font-bold text-[22px] leading-none">Min-Jun Yang</span>
+              <span class="font-kr text-[11px] text-[#8A867E]">양민준</span>
+            </div>
+            <div class="mt-3 pt-2 border-t border-[#F3F1ED]/10 flex justify-between font-mono text-[9px] text-[#8A867E]">
+              <span>@minjun.seoul</span>
+              <span class="text-[#FF4D79]">FILTER WIRE →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Component 08: Top-5 Inline Aperture + Subscribe Input -->
+        <div class="lg:col-span-4 figma-frame p-6 space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="figma-label">❖ Top 5 / Inline Photo Aperture Row</div>
+            <div class="aperture-demo is-open border-y border-[#F3F1ED]/15 py-5 cursor-pointer">
+              <div class="flex items-center gap-4">
+                <span class="font-display italic font-bold text-[34px] text-[#FF4D79] leading-none">01</span>
+                <div class="font-display font-bold text-[24px] leading-tight text-[#F3F1ED]">
+                  <span>Neon &amp;</span>
+                  <span class="aperture-demo-slot border border-[#FF4D79] bg-[#121216]">
+                    <img src="https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=600&q=80" alt="" class="w-full h-full object-cover" />
+                  </span>
+                  <span class="italic font-normal">Tradition</span>
+                </div>
+              </div>
+              <div class="font-mono text-[9px] text-[#8A867E] mt-2">HOVER STATE SHOWN (WIDTH: 0PX → 112PX)</div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="figma-label">❖ Footer / Sunday Dispatch Input</div>
+            <div class="bg-[#FF4D79] text-[#09090B] p-4 rounded">
+              <div class="flex items-center justify-between border-b-2 border-[#09090B] pb-1.5 gap-2">
+                <span class="font-display italic text-[22px] text-[#09090B]/60">reader@bomnal.kr</span>
+                <span class="px-3 py-1.5 bg-[#09090B] text-[#F3F1ED] font-mono text-[9px] tracking-[0.18em]">SUBSCRIBE →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 03. COMPLETE PICTURE & PHOTOGRAPHY ASSET GALLERY (All 11 Images)    -->
+    <!-- =================================================================== -->
+    <section id="kit-pictures" class="space-y-10 pb-16">
+      <div class="border-b border-[#F3F1ED]/15 pb-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="font-mono text-[10px] tracking-[0.24em] text-[#38BDF8] block mb-2">
+            03 // PHOTOGRAPHY &amp; PORTRAIT ASSETS USED IN BOMNAL-HOME.HTML
+          </span>
+          <h2 class="font-display font-bold text-[40px] sm:text-[52px] leading-none">
+            Pictures &amp; <span class="italic font-normal text-[#38BDF8]">Media Library</span>
+          </h2>
+        </div>
+
+        <!-- Asset Category Filter -->
+        <div class="flex flex-wrap items-center gap-1.5 font-mono text-[9.5px] tracking-[0.16em]">
+          <button type="button" data-asset-filter="all" class="asset-filter-btn px-3 py-1.5 bg-[#38BDF8] text-[#09090B] font-semibold">ALL (11)</button>
+          <button type="button" data-asset-filter="editorial" class="asset-filter-btn px-3 py-1.5 border border-[#F3F1ED]/15 text-[#8A867E] hover:text-[#F3F1ED]">EDITORIAL (7)</button>
+          <button type="button" data-asset-filter="author" class="asset-filter-btn px-3 py-1.5 border border-[#F3F1ED]/15 text-[#8A867E] hover:text-[#F3F1ED]">AUTHORS (4)</button>
+        </div>
+      </div>
+
+      <!-- Picture Cards Grid -->
+      <div id="pictures-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 04. INTERACTIVE FIGMA PROTOTYPE & USER FLOW MAP                     -->
+    <!-- =================================================================== -->
+    <section id="kit-prototype" class="space-y-10 pb-20">
+      <div class="border-b border-[#F3F1ED]/15 pb-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="font-mono text-[10px] tracking-[0.24em] text-[#FF4D79] block mb-2">
+            04 // CLICKABLE FIGMA PROTOTYPE &amp; FLOW ARCHITECTURE
+          </span>
+          <h2 class="font-display font-bold text-[40px] sm:text-[52px] leading-none">
+            Interactive <span class="italic font-normal text-[#FF4D79]">Prototype</span>
+          </h2>
+        </div>
+
+        <!-- Prototype Controls Bar -->
+        <div class="flex flex-wrap items-center gap-2 font-mono text-[9.5px] tracking-[0.16em]">
+          <button id="proto-device-desktop" type="button" class="px-3 py-1.5 bg-[#FF4D79] text-[#09090B] font-semibold rounded">
+            DESKTOP 1440
+          </button>
+          <button id="proto-device-mobile" type="button" class="px-3 py-1.5 bg-[#121216] border border-[#F3F1ED]/15 text-[#8A867E] hover:text-[#F3F1ED] rounded">
+            MOBILE 390
+          </button>
+          <button id="proto-hotspots-btn" type="button" class="px-3 py-1.5 bg-[#121216] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#38BDF8] hover:text-[#09090B] rounded transition-colors">
+            ◈ HOTSPOTS: OFF
+          </button>
+          <button id="proto-restart-btn" type="button" class="px-3 py-1.5 bg-[#121216] border border-[#F3F1ED]/15 text-[#F3F1ED] hover:border-[#FF4D79] hover:text-[#FF4D79] rounded transition-colors">
+            ↺ RESTART
+          </button>
+        </div>
+      </div>
+
+      <!-- Figma-Style Blue Noodle User Flow Map (Click any node to jump) -->
+      <div class="figma-frame p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="figma-label">❖ Prototype / Flow 1 — Starting Point (Click Any Node to Jump)</div>
+          <span class="font-mono text-[9px] text-[#38BDF8] tracking-[0.16em]">TRANSITION: SMART ANIMATE · 450MS EASE-OUT</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 items-center font-mono text-[9.5px]">
+          <button type="button" data-flow-node="home" class="flow-node-btn p-3 bg-[#09090B] border-2 border-[#FF4D79] rounded text-left transition-all">
+            <div class="text-[#FF4D79] text-[8.5px] mb-1">▶ START · 01</div>
+            <div class="text-[#F3F1ED] font-semibold">HOME DIAL</div>
+            <div class="text-[#8A867E] text-[8px] mt-0.5">360° + Live Loop</div>
+          </button>
+
+          <button type="button" data-flow-node="daily" class="flow-node-btn p-3 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#38BDF8] rounded text-left transition-all">
+            <div class="text-[#38BDF8] text-[8.5px] mb-1">→ CLICK · 02</div>
+            <div class="text-[#F3F1ED] font-semibold">DAILY STORY</div>
+            <div class="text-[#8A867E] text-[8px] mt-0.5">Template Layout</div>
+          </button>
+
+          <button type="button" data-flow-node="longread" class="flow-node-btn p-3 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#FF4D79] rounded text-left transition-all">
+            <div class="text-[#FF4D79] text-[8.5px] mb-1">→ CLICK · 03</div>
+            <div class="text-[#F3F1ED] font-semibold">LONG-READ</div>
+            <div class="text-[#8A867E] text-[8px] mt-0.5">Experimental Act</div>
+          </button>
+
+          <button type="button" data-flow-node="search" class="flow-node-btn p-3 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#C49BFF] rounded text-left transition-all">
+            <div class="text-[#C49BFF] text-[8.5px] mb-1">KEY [/] · 04</div>
+            <div class="text-[#F3F1ED] font-semibold">SEARCH OVERLAY</div>
+            <div class="text-[#8A867E] text-[8px] mt-0.5">Live Filter Modal</div>
+          </button>
+
+          <button type="button" data-flow-node="queue" class="flow-node-btn p-3 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#FF4D79] rounded text-left transition-all col-span-2 sm:col-span-1">
+            <div class="text-[#FF4D79] text-[8.5px] mb-1">→ TAP ☆ · 05</div>
+            <div class="text-[#F3F1ED] font-semibold">SAVED QUEUE</div>
+            <div class="text-[#8A867E] text-[8px] mt-0.5">Reading Drawer</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Prototype Viewport Stage -->
+      <div class="bg-[#050507] border border-[#F3F1ED]/15 rounded-lg p-4 sm:p-8 flex flex-col items-center">
+        <!-- Figma Prototype Window Chrome -->
+        <div id="proto-viewport" class="w-full transition-all duration-500 bg-[#09090B] border border-[#F3F1ED]/20 rounded-md overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.85)]">
+          <!-- Browser / Device Top Bar -->
+          <div class="bg-[#121216] border-b border-[#F3F1ED]/12 px-4 py-2.5 flex items-center justify-between gap-3 font-mono text-[9.5px]">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#FF4D79]/80"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#F3F1ED]/25"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#38BDF8]/80"></span>
+              <button id="proto-back-btn" type="button" class="ml-2 px-2 py-0.5 border border-[#F3F1ED]/15 hover:border-[#FF4D79] text-[#8A867E] hover:text-[#F3F1ED] rounded">
+                ← BACK
+              </button>
+            </div>
+            <span id="proto-url-bar" class="text-[#8A867E] truncate">bomnal.kr / home-rotary-dial</span>
+            <span id="proto-screen-counter" class="text-[#FF4D79] shrink-0">01 / 05</span>
+          </div>
+
+          <!-- Dynamic Clickable Prototype Screen Canvas -->
+          <div id="proto-stage" class="min-h-[540px] max-h-[680px] overflow-y-auto relative">
+            <!-- Active Prototype Screen Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div
+    id="toast"
+    role="status"
+    class="fixed bottom-6 right-6 z-[100] bg-[#121216] border border-[#FF4D79] text-[#F3F1ED] font-mono text-[10px] tracking-[0.16em] px-4 py-2.5 opacity-0 translate-y-2 pointer-events-none transition-all duration-200 rounded"
+  >
+    COPIED
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- VANILLA JS: TOKENS, PICTURES RENDERER & CLIPBOARD COPY                -->
+  <!-- ===================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Iframe-safe Toast & Clipboard Copy
+      const toastEl = document.getElementById('toast');
+      let toastTimer = null;
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.remove('opacity-0', 'translate-y-2');
+        toastEl.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.remove('opacity-100', 'translate-y-0');
+          toastEl.classList.add('opacity-0', 'translate-y-2');
+        }, 1800);
+      }
+
+      function copyText(text, label) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('COPIED // ' + (label || text));
+        } catch (err) {
+          showToast('VALUE // ' + text);
+        }
+      }
+
+      // 1. Color Tokens
+      const colors = [
+        { name: 'Obsidian', hex: '#09090B', role: 'Primary BG' },
+        { name: 'Deep Slate', hex: '#0C0C10', role: 'Live / Authors BG' },
+        { name: 'Surface', hex: '#121216', role: 'Cards / Modals' },
+        { name: 'Porcelain', hex: '#F3F1ED', role: 'Ink / Rupture BG' },
+        { name: 'Ash Muted', hex: '#8A867E', role: 'Secondary Copy' },
+        { name: 'Blossom Pink', hex: '#FF4D79', role: 'Long-Read / Accent' },
+        { name: 'Alley Cyan', hex: '#38BDF8', role: 'Daily Dispatch' },
+      ];
+
+      const colorGrid = document.getElementById('color-grid');
+      colorGrid.innerHTML = colors.map((c) => `
+        <button
+          type="button"
+          data-copy="${c.hex}"
+          class="copy-item group bg-[#121216] border border-[#F3F1ED]/15 hover:border-[#FF4D79] rounded-md overflow-hidden text-left transition-all"
+        >
+          <div class="h-20 w-full border-b border-[#F3F1ED]/10" style="background-color: ${c.hex};"></div>
+          <div class="p-3 space-y-0.5">
+            <div class="font-mono text-[11px] font-medium text-[#F3F1ED] group-hover:text-[#FF4D79]">${c.hex}</div>
+            <div class="font-sans text-[12px] text-[#F3F1ED]/90">${c.name}</div>
+            <div class="font-mono text-[8.5px] text-[#8A867E] uppercase">${c.role}</div>
+          </div>
+        </button>
+      `).join('');
+
+      // 2. All 11 Pictures Used in bomnal-home.html
+      const pictures = [
+        {
+          id: 'PIC-01',
+          category: 'editorial',
+          title: 'Neon & Tradition (Euljiro Night)',
+          usedIn: 'Rotary Dial #01 · Porcelain Long-Read #1 · Top 5 #01',
+          ratio: '16:10 · 1600px',
+          kr: '네온',
+          url: 'https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1600&q=85',
+        },
+        {
+          id: 'PIC-02',
+          category: 'editorial',
+          title: 'Neo-Hanok Spatial Dynamics in Bukchon',
+          usedIn: 'Rotary Dial #02 · Live Stream #01 · Daily Wire',
+          ratio: '16:10 · 1400px',
+          kr: '한옥',
+          url: 'https://images.unsplash.com/photo-1583167617240-1b4d8e5f9f27?auto=format&fit=crop&w=1400&q=85',
+        },
+        {
+          id: 'PIC-03',
+          category: 'editorial',
+          title: 'Seongsu Subterranean Vinyl & Tea Labs',
+          usedIn: 'Rotary Dial #03 · Live Stream #04 · Daily Wire',
+          ratio: '16:10 · 1400px',
+          kr: '성수',
+          url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=1400&q=85',
+        },
+        {
+          id: 'PIC-04',
+          category: 'editorial',
+          title: 'The Asymmetry of Joseon Moon Jars',
+          usedIn: 'Rotary Dial #04 · Porcelain Long-Read #2 · Live #03',
+          ratio: '4:3 · 1400px',
+          kr: '달항아리',
+          url: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=1400&q=85',
+        },
+        {
+          id: 'PIC-05',
+          category: 'editorial',
+          title: 'Yeouido Cherry Blossom Drift After Dark',
+          usedIn: 'Rotary Dial #05 · Live Stream #05 · Daily Wire',
+          ratio: '16:10 · 1400px',
+          kr: '여의도',
+          url: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1400&q=85',
+        },
+        {
+          id: 'PIC-06',
+          category: 'editorial',
+          title: 'Mulberry Paper Outerwear: Hanji for Rain',
+          usedIn: 'Rotary Dial #06 · Daily Wire · Top 5',
+          ratio: '16:10 · 1400px',
+          kr: '한지',
+          url: 'https://images.unsplash.com/photo-1546874177-9e664107314e?auto=format&fit=crop&w=1400&q=85',
+        },
+        {
+          id: 'PIC-07',
+          category: 'editorial',
+          title: 'Midnight Vinyl Pressing in Euljiro Print Alley',
+          usedIn: 'Live Stream #02 (Looping Marquee)',
+          ratio: '16:10 · 900px',
+          kr: '을지로 속보',
+          url: 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?auto=format&fit=crop&w=900&q=80',
+        },
+        {
+          id: 'PIC-08',
+          category: 'author',
+          title: 'Portrait — Min-Jun Yang',
+          usedIn: 'Featured Authors #01 (Grayscale → Color Hover)',
+          ratio: '4:5 · 500px',
+          kr: '양민준',
+          url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80',
+        },
+        {
+          id: 'PIC-09',
+          category: 'author',
+          title: 'Portrait — Seo-Yeon Park',
+          usedIn: 'Featured Authors #02 (Grayscale → Color Hover)',
+          ratio: '4:5 · 500px',
+          kr: '박서연',
+          url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80',
+        },
+        {
+          id: 'PIC-10',
+          category: 'author',
+          title: 'Portrait — Ji-Hoon Kang',
+          usedIn: 'Featured Authors #03 (Grayscale → Color Hover)',
+          ratio: '4:5 · 500px',
+          kr: '강지훈',
+          url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80',
+        },
+        {
+          id: 'PIC-11',
+          category: 'author',
+          title: 'Portrait — Hana Choi',
+          usedIn: 'Featured Authors #04 (Grayscale → Color Hover)',
+          ratio: '4:5 · 500px',
+          kr: '최하나',
+          url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80',
+        },
+      ];
+
+      const picturesGrid = document.getElementById('pictures-grid');
+      let assetFilter = 'all';
+
+      function renderPictures() {
+        const list = pictures.filter((p) => assetFilter === 'all' || p.category === assetFilter);
+
+        picturesGrid.innerHTML = list.map((p) => `
+          <article class="bg-[#121216] border border-[#F3F1ED]/15 hover:border-[#38BDF8] rounded-md overflow-hidden flex flex-col justify-between transition-colors">
+            <div>
+              <div class="relative bg-[#09090B] overflow-hidden">
+                <img
+                  src="${p.url}"
+                  alt="${p.title}"
+                  onerror="this.src='https://placehold.co/800x500/121216/FF4D79?text=${encodeURIComponent(p.id)}'"
+                  class="w-full h-[210px] object-cover"
+                />
+                <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-[#09090B]/85 font-mono text-[9px] tracking-[0.16em] text-[#FF4D79] border border-[#FF4D79]/40">
+                  ${p.id} · ${p.category.toUpperCase()}
+                </span>
+                <span class="absolute bottom-2.5 right-2.5 px-2 py-0.5 bg-[#09090B]/85 font-kr text-[11px] text-[#F3F1ED]">
+                  ${p.kr}
+                </span>
+              </div>
+
+              <div class="p-4 space-y-1.5">
+                <h3 class="font-display font-bold text-[22px] leading-tight text-[#F3F1ED]">${p.title}</h3>
+                <p class="font-mono text-[9.5px] text-[#38BDF8] tracking-[0.1em]">USED IN: ${p.usedIn}</p>
+                <p class="font-mono text-[9px] text-[#8A867E]">SPEC: ${p.ratio}</p>
+              </div>
+            </div>
+
+            <div class="px-4 pb-4 pt-2 flex items-center gap-2 font-mono text-[9.5px] tracking-[0.14em]">
+              <button
+                type="button"
+                data-copy-url="${p.url}"
+                data-copy-label="${p.id} IMAGE URL"
+                class="copy-url-btn flex-1 py-2 bg-[#09090B] border border-[#F3F1ED]/20 hover:border-[#FF4D79] hover:text-[#FF4D79] text-[#F3F1ED] rounded transition-colors"
+              >
+                COPY IMAGE URL
+              </button>
+              <a
+                href="${p.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-3 py-2 bg-[#FF4D79] hover:bg-[#ff658b] text-[#09090B] font-semibold rounded transition-colors"
+                title="Open full-res image to save or paste into Figma"
+              >
+                OPEN ↗
+              </a>
+            </div>
+          </article>
+        `).join('');
+
+        picturesGrid.querySelectorAll('.copy-url-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            copyText(btn.getAttribute('data-copy-url'), btn.getAttribute('data-copy-label'));
+          });
+        });
+      }
+
+      // Bind filter buttons
+      document.querySelectorAll('.asset-filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          assetFilter = btn.getAttribute('data-asset-filter');
+          document.querySelectorAll('.asset-filter-btn').forEach((b) => {
+            const on = b === btn;
+            b.className = on
+              ? 'asset-filter-btn px-3 py-1.5 bg-[#38BDF8] text-[#09090B] font-semibold'
+              : 'asset-filter-btn px-3 py-1.5 border border-[#F3F1ED]/15 text-[#8A867E] hover:text-[#F3F1ED]';
+          });
+          renderPictures();
+        });
+      });
+
+      // Bind token copy buttons
+      document.querySelectorAll('.copy-item').forEach((btn) => {
+        btn.addEventListener('click', () => copyText(btn.getAttribute('data-copy')));
+      });
+
+      // 3. Interactive Full 360° Rotary Dial Master Component
+      const kitDialNodes = [
+        { num: '01', kr: '네온', format: 'longread', label: '01 · LONG-READ · NEON & TRADITION' },
+        { num: '02', kr: '한옥', format: 'daily', label: '02 · DAILY · NEO-HANOK BUKCHON' },
+        { num: '03', kr: '성수', format: 'daily', label: '03 · DAILY · SEONGSU VINYL & TEA' },
+        { num: '04', kr: '달항아리', format: 'longread', label: '04 · LONG-READ · JOSEON MOON JARS' },
+        { num: '05', kr: '여의도', format: 'daily', label: '05 · DAILY · YEOUIDO BLOSSOM DRIFT' },
+        { num: '06', kr: '한지', format: 'daily', label: '06 · DAILY · HANJI OUTERWEAR' },
+      ];
+
+      const kitDialRing = document.getElementById('kit-dial-ring');
+      const kitDialCenterNum = document.getElementById('kit-dial-center-num');
+      const kitDialCenterKr = document.getElementById('kit-dial-center-kr');
+      const kitDialAzimuth = document.getElementById('kit-dial-azimuth');
+      const kitDialActiveMeta = document.getElementById('kit-dial-active-meta');
+      const kitDialAutoBtn = document.getElementById('kit-dial-auto');
+
+      let kitDialIdx = 0;
+      let kitAutoTimer = null;
+
+      function initKitDial() {
+        if (!kitDialRing) return;
+        kitDialRing.innerHTML = kitDialNodes.map((n, idx) => {
+          const deg = idx * 60;
+          const rad = (deg - 90) * (Math.PI / 180);
+          const x = 50 + 49 * Math.cos(rad);
+          const y = 50 + 49 * Math.sin(rad);
+          const isLong = n.format === 'longread';
+
+          return `
+            <button
+              type="button"
+              data-kit-node="${idx}"
+              class="kit-dial-node absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none group"
+              style="left: ${x.toFixed(2)}%; top: ${y.toFixed(2)}%;"
+              title="${n.label}"
+            >
+              <span class="kit-dial-node-counter flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full font-mono text-[10px] font-semibold border-2 transition-all duration-300 ${
+                isLong
+                  ? 'border-[#FF4D79] text-[#FF4D79] bg-[#09090B]'
+                  : 'border-[#38BDF8] text-[#38BDF8] bg-[#09090B]'
+              }">
+                ${n.num}
+              </span>
+            </button>
+          `;
+        }).join('');
+
+        kitDialRing.querySelectorAll('.kit-dial-node').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            setKitDialIndex(parseInt(btn.getAttribute('data-kit-node'), 10));
+          });
+        });
+
+        setKitDialIndex(0);
+      }
+
+      function setKitDialIndex(idx) {
+        kitDialIdx = (idx + kitDialNodes.length) % kitDialNodes.length;
+        const item = kitDialNodes[kitDialIdx];
+        const rotDeg = -kitDialIdx * 60;
+        const isLong = item.format === 'longread';
+
+        kitDialRing.style.transform = `rotate(${rotDeg}deg)`;
+        kitDialRing.querySelectorAll('.kit-dial-node').forEach((node, i) => {
+          const inner = node.querySelector('.kit-dial-node-counter');
+          const active = i === kitDialIdx;
+          const long = kitDialNodes[i].format === 'longread';
+          inner.style.transform = `rotate(${-rotDeg}deg) scale(${active ? 1.18 : 1})`;
+
+          if (active) {
+            inner.className = long
+              ? 'kit-dial-node-counter flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#F3F1ED] bg-[#FF4D79] text-[#09090B] shadow-[0_0_26px_rgba(255,77,121,0.75)]'
+              : 'kit-dial-node-counter flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#F3F1ED] bg-[#38BDF8] text-[#09090B] shadow-[0_0_24px_rgba(56,189,248,0.65)]';
+          } else {
+            inner.className = long
+              ? 'kit-dial-node-counter flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#FF4D79] text-[#FF4D79] bg-[#09090B] hover:scale-110'
+              : 'kit-dial-node-counter flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full font-mono text-[10px] font-semibold border-2 border-[#38BDF8] text-[#38BDF8] bg-[#09090B] hover:scale-110';
+          }
+        });
+
+        if (kitDialCenterNum) {
+          kitDialCenterNum.textContent = item.num;
+          kitDialCenterNum.className = `font-display italic font-bold text-[44px] sm:text-[54px] leading-none ${
+            isLong ? 'text-[#FF4D79]' : 'text-[#38BDF8]'
+          }`;
+        }
+        if (kitDialCenterKr) kitDialCenterKr.textContent = item.kr;
+        if (kitDialAzimuth) kitDialAzimuth.textContent = `AZIMUTH ${String(kitDialIdx * 60).padStart(3, '0')}°`;
+        if (kitDialActiveMeta) kitDialActiveMeta.textContent = item.label;
+      }
+
+      document.getElementById('kit-dial-prev')?.addEventListener('click', () => setKitDialIndex(kitDialIdx - 1));
+      document.getElementById('kit-dial-next')?.addEventListener('click', () => setKitDialIndex(kitDialIdx + 1));
+
+      if (kitDialAutoBtn) {
+        kitDialAutoBtn.addEventListener('click', () => {
+          if (kitAutoTimer) {
+            clearInterval(kitAutoTimer);
+            kitAutoTimer = null;
+            kitDialAutoBtn.textContent = '▶ AUTO-ROTATE';
+            showToast('DIAL AUTO-ROTATE // STOPPED');
+          } else {
+            kitAutoTimer = setInterval(() => setKitDialIndex(kitDialIdx + 1), 1600);
+            kitDialAutoBtn.textContent = '❚❚ STOP AUTO';
+            showToast('DIAL AUTO-ROTATE // ACTIVE');
+          }
+        });
+      }
+
+      initKitDial();
+      renderPictures();
+
+      // 4. INTERACTIVE FIGMA PROTOTYPE ENGINE (5 Linked Screens)
+      const protoStage = document.getElementById('proto-stage');
+      const protoViewport = document.getElementById('proto-viewport');
+      const protoUrlBar = document.getElementById('proto-url-bar');
+      const protoCounter = document.getElementById('proto-screen-counter');
+      const protoHotspotsBtn = document.getElementById('proto-hotspots-btn');
+      const protoDesktopBtn = document.getElementById('proto-device-desktop');
+      const protoMobileBtn = document.getElementById('proto-device-mobile');
+
+      const protoState = {
+        screen: 'home',
+        history: ['home'],
+        hotspots: false,
+        mobile: false,
+        xrayPct: 50,
+        saved: [
+          { id: 'lr-neon', type: 'LONG-READ', title: 'Neon & Tradition: The Visual Language of Modern Seoul', target: 'longread' },
+          { id: 'd-hanok', type: 'DAILY', title: 'Neo-Hanok Spatial Dynamics in Bukchon', target: 'daily' },
+        ],
+      };
+
+      const screenMeta = {
+        home: { num: '01 / 05', url: 'bomnal.kr / home-rotary-dial' },
+        daily: { num: '02 / 05', url: 'bomnal.kr / daily / neo-hanok-bukchon' },
+        longread: { num: '03 / 05', url: 'bomnal.kr / exclusive / neon-and-tradition' },
+        search: { num: '04 / 05', url: 'bomnal.kr / search-darkroom' },
+        queue: { num: '05 / 05', url: 'bomnal.kr / saved-reading-list' },
+      };
+
+      function navigateProto(screen, pushHistory = true) {
+        if (!screenMeta[screen] || !protoStage) return;
+        if (pushHistory && protoState.screen !== screen) {
+          protoState.history.push(screen);
+        }
+        protoState.screen = screen;
+
+        // Update chrome bar & flow map active node
+        protoUrlBar.textContent = screenMeta[screen].url;
+        protoCounter.textContent = screenMeta[screen].num;
+        document.querySelectorAll('.flow-node-btn').forEach((btn) => {
+          const active = btn.getAttribute('data-flow-node') === screen;
+          btn.classList.toggle('border-2', active);
+          btn.classList.toggle('border-[#FF4D79]', active);
+          btn.classList.toggle('border-[#F3F1ED]/20', !active);
+        });
+
+        renderProtoScreen();
+        protoStage.scrollTop = 0;
+      }
+
+      function renderProtoScreen() {
+        const s = protoState.screen;
+        const isMob = protoState.mobile;
+
+        if (s === 'home') {
+          protoStage.innerHTML = `
+            <div class="proto-screen-anim p-5 sm:p-8 space-y-6 bg-[#09090B]">
+              <!-- Mini Perimeter HUD -->
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#F3F1ED]/12 pb-4">
+                <span class="font-serif italic font-black text-[18px] text-[#FF4D79] skew-bomnal inline-block">BOMNAL</span>
+                <div class="flex items-center gap-2 font-mono text-[9px] tracking-[0.14em]">
+                  <button type="button" data-proto-go="search" class="px-2.5 py-1.5 bg-[#121216] border border-[#F3F1ED]/20 hover:border-[#FF4D79] rounded">/ SEARCH</button>
+                  <button type="button" data-proto-go="queue" class="px-2.5 py-1.5 bg-[#121216] border border-[#F3F1ED]/20 hover:border-[#FF4D79] rounded">☆ ${protoState.saved.length}</button>
+                </div>
+              </div>
+
+              <!-- Hero Dial Preview -->
+              <div class="grid ${isMob ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-12'} gap-6 items-center bg-[#121216]/70 border border-[#F3F1ED]/12 p-5 rounded">
+                <div class="${isMob ? '' : 'md:col-span-7'} space-y-3">
+                  <span class="inline-block px-2.5 py-1 bg-[#FF4D79] text-[#09090B] font-mono font-semibold text-[9px] tracking-[0.16em]">★ MONTHLY EXCLUSIVE LONG-READ</span>
+                  <h3 class="font-display font-bold text-[30px] sm:text-[38px] leading-[0.94] text-[#F3F1ED]">
+                    Neon &amp; Tradition: The Visual Language of Modern Seoul
+                  </h3>
+                  <p class="font-sans font-light text-[12.5px] text-[#8A867E]">Click below to experience the experimental long-read layout or jump into today’s short daily dispatches.</p>
+                  <div class="flex flex-wrap gap-2 pt-1">
+                    <button type="button" data-proto-go="longread" class="px-4 py-2 bg-[#F3F1ED] hover:bg-[#FF4D79] text-[#09090B] font-mono font-semibold text-[9.5px] tracking-[0.16em] transition-colors">
+                      OPEN LONG-READ →
+                    </button>
+                    <button type="button" data-proto-go="daily" class="px-4 py-2 border border-[#38BDF8] text-[#38BDF8] hover:bg-[#38BDF8] hover:text-[#09090B] font-mono text-[9.5px] tracking-[0.16em] transition-colors">
+                      OPEN DAILY STORY →
+                    </button>
+                  </div>
+                </div>
+                <div class="${isMob ? '' : 'md:col-span-5'}">
+                  <button type="button" data-proto-go="longread" class="w-full overflow-hidden border border-[#F3F1ED]/15 bg-[#09090B] block group text-left">
+                    <img src="https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=900&q=80" alt="Neon Seoul" class="w-full h-[180px] object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mini Daily Wire Strip -->
+              <div class="space-y-2.5">
+                <div class="font-mono text-[9px] tracking-[0.2em] text-[#38BDF8]">02 // TODAY'S DAILY DISPATCHES</div>
+                <button type="button" data-proto-go="daily" class="w-full p-4 bg-[#121216] border border-[#F3F1ED]/12 hover:border-[#38BDF8] flex items-center justify-between gap-4 text-left rounded transition-colors">
+                  <div>
+                    <div class="font-mono text-[8.5px] text-[#38BDF8] mb-0.5">● 08:30 AM · 3 MIN · ARCHITECTURE</div>
+                    <div class="font-display font-bold text-[22px] leading-tight text-[#F3F1ED]">Neo-Hanok Spatial Dynamics in Bukchon</div>
+                  </div>
+                  <span class="font-mono text-[10px] text-[#38BDF8] shrink-0">READ →</span>
+                </button>
+              </div>
+            </div>
+          `;
+        } else if (s === 'daily') {
+          protoStage.innerHTML = `
+            <div class="proto-screen-anim p-5 sm:p-8 space-y-6 bg-[#09090B]">
+              <div class="flex items-center justify-between border-b border-[#F3F1ED]/12 pb-3 font-mono text-[9.5px]">
+                <button type="button" data-proto-go="home" class="text-[#8A867E] hover:text-[#FF4D79]">← BACK TO HOME DIAL</button>
+                <span class="px-2 py-0.5 bg-[#38BDF8] text-[#09090B] font-semibold">● DAILY STORY TEMPLATE</span>
+              </div>
+
+              <div class="max-w-2xl mx-auto space-y-5">
+                <div class="font-mono text-[9.5px] tracking-[0.18em] text-[#38BDF8]">ARCHITECTURE · NOV 24, 2026 · 3 MIN READ</div>
+                <h3 class="font-display font-bold text-[34px] sm:text-[44px] leading-[0.95] text-[#F3F1ED]">
+                  Neo-Hanok Spatial Dynamics in Bukchon
+                </h3>
+                <img src="https://images.unsplash.com/photo-1583167617240-1b4d8e5f9f27?auto=format&fit=crop&w=1000&q=80" alt="Bukchon Hanok" class="w-full h-[220px] object-cover border border-[#F3F1ED]/15" />
+
+                <p class="font-sans font-light text-[14px] leading-[1.85] text-[#F3F1ED]/85">
+                  Where centuries-old pine joinery meets contemporary glass, Bukchon’s newest residential renovations keep the central courtyard (<em class="font-display italic text-[17px]">madang</em>) unroofed—calibrating wind, twilight, and falling cherry petals rather than sealing the city out.
+                </p>
+
+                <blockquote class="border-l-2 border-[#38BDF8] pl-4 font-display italic text-[22px] text-[#F3F1ED]">
+                  “Architecture need not block the season; it can frame the petal as it falls.”
+                </blockquote>
+
+                <!-- Author Bio & Next Story -->
+                <div class="p-4 bg-[#121216] border border-[#F3F1ED]/12 flex flex-wrap items-center justify-between gap-4 rounded">
+                  <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Seo-Yeon Park" class="w-11 h-11 rounded-full object-cover border border-[#FF4D79]" />
+                    <div>
+                      <div class="font-display font-bold text-[18px] leading-none">Seo-Yeon Park</div>
+                      <div class="font-mono text-[8.5px] text-[#8A867E] mt-1">ARCHITECTURAL PHOTOGRAPHER · @seoyeon.lens</div>
+                    </div>
+                  </div>
+                  <button type="button" data-proto-go="longread" class="px-3.5 py-2 bg-[#FF4D79] text-[#09090B] font-mono font-semibold text-[9px] tracking-[0.16em]">
+                    NEXT: MONTHLY LONG-READ →
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (s === 'longread') {
+          protoStage.innerHTML = `
+            <div class="proto-screen-anim bg-[#09090B] relative overflow-hidden">
+              <div class="p-5 sm:p-8 space-y-6">
+                <div class="flex items-center justify-between border-b border-[#F3F1ED]/12 pb-3 font-mono text-[9.5px]">
+                  <button type="button" data-proto-go="home" class="text-[#8A867E] hover:text-[#FF4D79]">← HOME DIAL</button>
+                  <span class="px-2 py-0.5 bg-[#FF4D79] text-[#09090B] font-semibold">★ EXPERIMENTAL LONG-READ</span>
+                </div>
+
+                <!-- Shattered Spread Mini Hero -->
+                <div class="relative py-4">
+                  <div class="font-mono text-[9px] tracking-[0.22em] text-[#FF4D79] mb-2">ISSUE 04 // ACT III — INTERACTIVE X-RAY CURTAIN</div>
+                  <h3 class="font-display font-bold text-[36px] sm:text-[48px] leading-[0.88] text-[#F3F1ED]">
+                    SEOUL, <span class="italic text-[#FF4D79]">in fragments.</span>
+                  </h3>
+                </div>
+
+                <!-- Working Mini X-Ray Curtain Slider inside Prototype -->
+                <div class="space-y-2">
+                  <div class="relative w-full h-[220px] overflow-hidden border border-[#FF4D79]/50 select-none">
+                    <img src="https://images.unsplash.com/photo-1546874177-9e664107314e?auto=format&fit=crop&w=1000&q=80" alt="Neon Reality" class="absolute inset-0 w-full h-full object-cover" />
+                    <div id="proto-xray-left" class="absolute inset-0" style="clip-path: inset(0 ${100 - protoState.xrayPct}% 0 0);">
+                      <img src="https://images.unsplash.com/photo-1583167617240-1b4d8e5f9f27?auto=format&fit=crop&w=1000&q=80" alt="Hanok Reality" class="w-full h-full object-cover" />
+                    </div>
+                    <div id="proto-xray-bar" class="absolute top-0 bottom-0 w-[2px] bg-[#FF4D79] pointer-events-none" style="left: ${protoState.xrayPct}%;"></div>
+                    <span class="absolute bottom-2 left-2 px-2 py-0.5 bg-[#09090B]/80 font-mono text-[8.5px] text-[#F3F1ED]">TRADITION (여백)</span>
+                    <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-[#09090B]/80 font-mono text-[8.5px] text-[#FF4D79]">NEON (네온)</span>
+                  </div>
+                  <div class="flex items-center gap-3 font-mono text-[9px] text-[#8A867E]">
+                    <span>SLIDE X-RAY LENS:</span>
+                    <input id="proto-xray-slider" type="range" min="10" max="90" value="${protoState.xrayPct}" class="flex-1 accent-[#FF4D79] cursor-pointer" />
+                    <span id="proto-xray-val" class="text-[#FF4D79]">${protoState.xrayPct}%</span>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[#F3F1ED]/12 font-mono text-[9.5px]">
+                  <button type="button" data-proto-go="queue" class="px-3.5 py-2 border border-[#FF4D79] text-[#FF4D79] hover:bg-[#FF4D79] hover:text-[#09090B] transition-colors">
+                    ★ VIEW SAVED QUEUE (${protoState.saved.length})
+                  </button>
+                  <button type="button" data-proto-go="daily" class="text-[#38BDF8] hover:underline">
+                    SWITCH TO DAILY TEMPLATE →
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const slider = document.getElementById('proto-xray-slider');
+          if (slider) {
+            slider.addEventListener('input', () => {
+              protoState.xrayPct = parseInt(slider.value, 10);
+              const left = document.getElementById('proto-xray-left');
+              const bar = document.getElementById('proto-xray-bar');
+              const val = document.getElementById('proto-xray-val');
+              if (left) left.style.clipPath = `inset(0 ${100 - protoState.xrayPct}% 0 0)`;
+              if (bar) bar.style.left = `${protoState.xrayPct}%`;
+              if (val) val.textContent = `${protoState.xrayPct}%`;
+            });
+          }
+        } else if (s === 'search') {
+          protoStage.innerHTML = `
+            <div class="proto-screen-anim p-6 sm:p-8 space-y-6 bg-[#09090B]">
+              <div class="flex items-center justify-between font-mono text-[9.5px] text-[#C49BFF]">
+                <span>DARKROOM SEARCH OVERLAY // TRIGGER: KEY [/]</span>
+                <button type="button" data-proto-go="home" class="px-2.5 py-1 border border-[#F3F1ED]/20 text-[#F3F1ED] hover:border-[#FF4D79]">ESC ✕</button>
+              </div>
+              <input id="proto-search-input" type="text" placeholder="Type Neon, Hanok, Moon Jars..." class="w-full bg-transparent border-b-2 border-[#FF4D79] pb-2 font-display italic text-[30px] text-[#F3F1ED] placeholder-[#8A867E]/50 focus:outline-none" />
+              <div id="proto-search-list" class="divide-y divide-[#F3F1ED]/12"></div>
+            </div>
+          `;
+
+          const searchItems = [
+            { title: 'Neon & Tradition: The Visual Language of Modern Seoul', tag: '★ LONG-READ · 12 MIN', go: 'longread' },
+            { title: 'Neo-Hanok Spatial Dynamics in Bukchon', tag: '● DAILY · 3 MIN', go: 'daily' },
+            { title: 'The Asymmetry of Joseon Moon Jars', tag: '★ LONG-READ · 11 MIN', go: 'longread' },
+          ];
+
+          const renderProtoSearch = (q) => {
+            const listEl = document.getElementById('proto-search-list');
+            if (!listEl) return;
+            const term = (q || '').toLowerCase();
+            const hits = searchItems.filter((it) => it.title.toLowerCase().includes(term) || it.tag.toLowerCase().includes(term));
+            listEl.innerHTML = hits.length
+              ? hits.map((it) => `
+                  <button type="button" data-proto-go="${it.go}" class="w-full py-4 flex items-center justify-between text-left group">
+                    <div>
+                      <div class="font-mono text-[8.5px] text-[#FF4D79] mb-0.5">${it.tag}</div>
+                      <div class="font-display font-bold text-[22px] text-[#F3F1ED] group-hover:text-[#FF4D79]">${it.title}</div>
+                    </div>
+                    <span class="font-mono text-xs text-[#8A867E]">→</span>
+                  </button>
+                `).join('')
+              : '<div class="py-6 font-mono text-[10px] text-[#8A867E]">NO MATCHING RESULTS.</div>';
+            bindProtoLinks();
+          };
+
+          const inp = document.getElementById('proto-search-input');
+          if (inp) {
+            inp.addEventListener('input', () => renderProtoSearch(inp.value));
+            renderProtoSearch('');
+          }
+        } else if (s === 'queue') {
+          protoStage.innerHTML = `
+            <div class="proto-screen-anim p-6 sm:p-8 space-y-5 bg-[#0D0D11]">
+              <div class="flex items-center justify-between border-b border-[#F3F1ED]/12 pb-3">
+                <div>
+                  <span class="font-mono text-[9px] tracking-[0.2em] text-[#FF4D79] block">READING LIST DRAWER</span>
+                  <h3 class="font-display font-bold text-[28px] text-[#F3F1ED]">Saved Stories (${protoState.saved.length})</h3>
+                </div>
+                <button type="button" data-proto-go="home" class="px-3 py-1.5 border border-[#F3F1ED]/20 font-mono text-[9.5px] hover:border-[#FF4D79]">CLOSE ✕</button>
+              </div>
+              <div class="space-y-3">
+                ${protoState.saved.map((item) => `
+                  <div class="p-4 bg-[#121216] border border-[#F3F1ED]/15 flex items-center justify-between gap-4 rounded">
+                    <button type="button" data-proto-go="${item.target}" class="text-left group">
+                      <div class="font-mono text-[8.5px] ${item.type === 'LONG-READ' ? 'text-[#FF4D79]' : 'text-[#38BDF8]'} mb-1">${item.type}</div>
+                      <div class="font-display font-bold text-[22px] text-[#F3F1ED] group-hover:text-[#FF4D79]">${item.title}</div>
+                    </button>
+                    <button type="button" data-proto-go="${item.target}" class="px-3 py-1.5 bg-[#09090B] border border-[#F3F1ED]/20 font-mono text-[9px] text-[#FF4D79] shrink-0">OPEN →</button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        bindProtoLinks();
+      }
+
+      function bindProtoLinks() {
+        if (!protoStage) return;
+        protoStage.querySelectorAll('[data-proto-go]').forEach((el) => {
+          el.addEventListener('click', () => {
+            navigateProto(el.getAttribute('data-proto-go'));
+          });
+        });
+      }
+
+      document.querySelectorAll('.flow-node-btn').forEach((btn) => {
+        btn.addEventListener('click', () => navigateProto(btn.getAttribute('data-flow-node')));
+      });
+
+      document.getElementById('proto-back-btn')?.addEventListener('click', () => {
+        if (protoState.history.length > 1) {
+          protoState.history.pop();
+          navigateProto(protoState.history[protoState.history.length - 1], false);
+        } else {
+          showToast('PROTOTYPE // AT STARTING SCREEN');
+        }
+      });
+
+      document.getElementById('proto-restart-btn')?.addEventListener('click', () => {
+        protoState.history = ['home'];
+        navigateProto('home', false);
+        showToast('PROTOTYPE // RESTARTED');
+      });
+
+      if (protoHotspotsBtn && protoStage) {
+        protoHotspotsBtn.addEventListener('click', () => {
+          protoState.hotspots = !protoState.hotspots;
+          protoStage.classList.toggle('proto-show-hotspots', protoState.hotspots);
+          protoHotspotsBtn.textContent = protoState.hotspots ? '◈ HOTSPOTS: ON' : '◈ HOTSPOTS: OFF';
+          showToast(protoState.hotspots ? 'FIGMA HOTSPOT HINTS // ON' : 'FIGMA HOTSPOT HINTS // OFF');
+        });
+      }
+
+      if (protoDesktopBtn && protoMobileBtn && protoViewport) {
+        protoDesktopBtn.addEventListener('click', () => {
+          protoState.mobile = false;
+          protoViewport.style.maxWidth = '100%';
+          protoDesktopBtn.className = 'px-3 py-1.5 bg-[#FF4D79] text-[#09090B] font-semibold rounded';
+          protoMobileBtn.className = 'px-3 py-1.5 bg-[#121216] border border-[#F3F1ED]/15 text-[#8A867E] hover:text-[#F3F1ED] rounded';
+          renderProtoScreen();
+        });
+        protoMobileBtn.addEventListener('click', () => {
+          protoState.mobile = true;
+          protoViewport.style.maxWidth = '390px';
+          protoMobileBtn.className = 'px-3 py-1.5 bg-[#FF4D79] text-[#09090B] font-semibold rounded';
+          protoDesktopBtn.className = 'px-3 py-1.5 bg-[#121216] border border-[#F3F1ED]/15 text-[#8A867E] hover:text-[#F3F1ED] rounded';
+          renderProtoScreen();
+        });
+      }
+
+      navigateProto('home', false);
+    })();
+  </script>
+</body>
+</html>
